@@ -1,4 +1,6 @@
 import { Box, Button, Text } from '@chakra-ui/react';
+import { connectDB } from '../../db/connection';
+import { getPosts } from '../../db/post';
 
 const Post = ({ post }) => {
   return (
@@ -33,14 +35,11 @@ const Post = ({ post }) => {
 };
 
 export async function getStaticPaths() {
-  const results = await fetch(
-    `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_VERCEL_URL}/api/post`
-  );
-
-  const { data } = (await results.json()) || [];
+  const { db } = await connectDB();
+  const posts = await getPosts(db);
 
   const paths =
-    data?.map((post) => ({
+    posts?.map((post) => ({
       params: {
         id: post._id,
       },
