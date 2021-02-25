@@ -33,7 +33,9 @@ const Post = ({ post }) => {
 };
 
 export async function getStaticPaths() {
-  const results = await fetch('http://localhost:3000/api/post');
+  const results = await fetch(
+    `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_VERCEL_URL}/api/post`
+  );
   const { data } = await results.json();
 
   const paths =
@@ -47,7 +49,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(`http://localhost:3000/api/post/${params.id}`);
+  const res = await fetch(
+    `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_VERCEL_URL}/${params.id}`
+  );
   const { data } = await res.json();
   return {
     props: {
