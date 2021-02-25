@@ -1,6 +1,6 @@
 import { Box, Button, Text } from '@chakra-ui/react';
 import { connectDB } from '../../db/connection';
-import { getPosts } from '../../db/post';
+import { getPosts, getPost } from '../../db/post';
 
 const Post = ({ post }) => {
   return (
@@ -49,13 +49,11 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(
-    `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_VERCEL_URL}/${params.id}`
-  );
-  const { data } = await res.json();
+  const { db } = await connectDB();
+  const post = await getPosts(db, params.id);
   return {
     props: {
-      post: data[0],
+      post: post[0],
     },
   };
 }
