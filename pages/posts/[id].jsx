@@ -36,7 +36,8 @@ export async function getStaticPaths() {
   const results = await fetch(
     `${process.env.PROTOCOL}${process.env.NEXT_PUBLIC_VERCEL_URL}/api/post`
   );
-  const { data } = await results.json();
+
+  const { data } = (await results.json()) || [];
 
   const paths =
     data?.map((post) => ({
